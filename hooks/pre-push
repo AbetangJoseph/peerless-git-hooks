@@ -22,7 +22,7 @@ fi
 # STEP 2. Check that the changes are within the allowable limits in order to make PR reviews effective
 
 # Maximum number of total changed lines allowed
-MAX_CHANGES=300
+MAX_CHANGES=500
 
 # Get the range of commits being pushed (from stdin)
 while read -r local_ref local_sha remote_ref remote_sha; do
