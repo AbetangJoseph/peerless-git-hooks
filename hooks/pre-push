@@ -5,7 +5,7 @@
 # STEP 1. Check that the branch naming conforms to Peerless standards
 
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
-PATTERN='^(feature|bugfix|hotfix|chore|refactor|test|ops|docs|spike)/[A-Z]+-[0-9]+/.+$'
+PATTERN='^(feature|bugfix|hotfix|chore|refactor|test|ops|docs|spike|wip)/[A-Z]+-[0-9]+/.+$'
 
 echo "🔍 Checking branch adherence to standards..."
 
@@ -14,7 +14,7 @@ if [[ "$BRANCH_NAME" =~ $PATTERN ]]; then
 else
   echo "❌ Invalid branch name: '$BRANCH_NAME'"
   echo "Expected format: <type>/<TICKET-ID>/<short-description>"
-  echo "Acceptable types: feature|bugfix|hotfix|chore|refactor|test|ops|docs|spike"
+  echo "Acceptable types: feature|bugfix|hotfix|chore|refactor|test|ops|docs|spike|wip"
   echo "Example: feature/ABC-123/account-name-enquiry"
   exit 1
 fi
@@ -22,7 +22,7 @@ fi
 # STEP 2. Check that the changes are within the allowable limits in order to make PR reviews effective
 
 # Maximum number of total changed lines allowed
-MAX_CHANGES=500
+MAX_LINE_CHANGES=400
 
 # Get the range of commits being pushed (from stdin)
 while read -r local_ref local_sha remote_ref remote_sha; do
@@ -33,7 +33,7 @@ while read -r local_ref local_sha remote_ref remote_sha; do
     range="$remote_sha..$local_sha"
   fi
 
-  if ! command -v awk &> /dev/null; then
+  if ! command -v awk &>/dev/null; then
     echo "❌ Error: awk is required but not installed."
     exit 1
   fi
@@ -43,9 +43,9 @@ while read -r local_ref local_sha remote_ref remote_sha; do
   total=$(git diff "$range" --numstat | awk '{add += $1; del += $2} END {print add + del}')
 
   echo "You're about to push $total lines of changes."
-  
-  if [ "$total" -gt "$MAX_CHANGES" ]; then
-    echo "🚫 Push rejected: Your changes exceeds the $MAX_CHANGES-lines limit."
+
+  if [ "$total" -gt "$MAX_LINE_CHANGES" ]; then
+    echo "🚫 Push rejected: Your changes exceeds the $MAX_LINE_CHANGES-lines limit."
     echo "📝 Consider splitting your work into smaller PRs."
     exit 1
   fi
