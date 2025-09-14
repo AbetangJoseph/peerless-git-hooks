@@ -19,7 +19,3 @@ Note: This script will not work for you if you use Windows PowerShell or CMD. Us
 
 **Abetang Joseph Abetang**
 
-### 👤👤 Contributors
-
-**Sunmonu Oluwole**
-

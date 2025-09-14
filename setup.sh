@@ -1,21 +1,22 @@
 #!/bin/bash
+set -e
 
-# Resolve the absolute path to the hooks directory
-HOOKS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/hooks" && pwd)"
+# Where to permanently store your hooks
+TARGET_DIR="$HOME/.git-hooks/peerless"
 
-# Check if hooks directory exists
-if [ ! -d "$HOOKS_DIR" ]; then
-  echo "❌ Hooks directory not found at $HOOKS_DIR"
-  echo "Make sure you're running this from the root of the peerless-git-hooks repo."
-  exit 1
-fi
+echo "📂 Setting up global hooks..."
 
-# Set global Git config
-git config --global core.hooksPath "$HOOKS_DIR"
-echo "✅ Git global hooks configured to: $HOOKS_DIR"
+# Create the target directory if it doesn't exist
+mkdir -p "$TARGET_DIR"
 
-# Confirm it's set
-echo "🧪 Current global core.hooksPath: $(git config --global core.hooksPath)"
+# Copy the hooks folder (pre-commit, pre-push, etc.)
+cp -r hooks "$TARGET_DIR/"
 
-# Set hooks as executable (in case +x was lost during clone)
-chmod +x "$HOOKS_DIR"/*
+# Point Git to use this directory globally
+git config --global core.hooksPath "$TARGET_DIR/hooks"
+
+# Make sure hooks are executable
+chmod +x "$TARGET_DIR/hooks/"*
+
+echo "✅ Global hooks installed at: $TARGET_DIR/hooks"
+echo "ℹ️  Git is now configured to use these hooks for ALL repos."
