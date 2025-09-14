@@ -5,7 +5,7 @@
 # STEP 1. Check that the branch naming conforms to Peerless standards
 
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
-PATTERN='^(feature|bugfix|hotfix|chore|refactor|test|ops|docs|spike|wip)/[A-Z]+-[0-9]+/.+$'
+PATTERN='^[^/]+/(feature|bugfix|hotfix|chore|refactor|test|ops|docs|spike|wip)/[A-Z]+-[0-9]+/.+$'
 
 echo "🔍 Checking branch adherence to standards..."
 
@@ -13,9 +13,9 @@ if [[ "$BRANCH_NAME" =~ $PATTERN ]]; then
   echo "✅ Branch name is valid."
 else
   echo "❌ Invalid branch name: '$BRANCH_NAME'"
-  echo "Expected format: <type>/<TICKET-ID>/<short-description>"
+  echo "Expected format: <client>/<type>/<TICKET-ID>/<short-description>"
   echo "Acceptable types: feature|bugfix|hotfix|chore|refactor|test|ops|docs|spike|wip"
-  echo "Example: feature/ABC-123/account-name-enquiry"
+  echo "Example: sterling/feature/ABC-123/account-name-enquiry"
   exit 1
 fi
 
