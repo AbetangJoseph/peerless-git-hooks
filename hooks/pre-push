@@ -14,7 +14,7 @@ if [[ "$BRANCH_NAME" =~ $PATTERN ]]; then
 else
   echo "❌ Invalid branch name: '$BRANCH_NAME'"
   echo "Expected format: <client>/<type>/<TICKET-ID>/<short-description>"
-  echo "Acceptable types: feature|bugfix|hotfix|chore|refactor|test|ops|docs|spike|wip"
+  echo "Acceptable change types: feature|bugfix|hotfix|chore|refactor|test|ops|docs|spike|wip"
   echo "Example: sterling/feature/ABC-123/account-name-enquiry"
   exit 1
 fi
